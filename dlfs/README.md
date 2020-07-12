@@ -8,7 +8,7 @@ Purpose of this project is to build codes that execute basic deep learning funct
 
 Dataset: MNIST dataset
 
-### Basic Functions
+### Basic Functions class
 
 -Gradient function: function that calculates numerical gradient from vectors
 
@@ -22,5 +22,6 @@ Dataset: MNIST dataset
 
 ##### Predict Function: Forward propagation 
 
-###### Loss Function: Backward propagation
+##### Loss Function: Backward propagation
 
+##### Update Function: Updating weights 
