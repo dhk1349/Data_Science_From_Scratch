@@ -20,3 +20,9 @@ def relu(a):
     vec=a>0
     vec=vec.astype(int)
     return a*vec
+
+
+
+def gradient(f, x):
+    h=1e-4
+    grad=
