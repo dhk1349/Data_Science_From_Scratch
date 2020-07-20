@@ -25,4 +25,4 @@ def relu(a):
 
 def gradient(f, x):
     h=1e-4
-    grad=
+    #grad=
