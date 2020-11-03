@@ -185,6 +185,28 @@ def visualize():
         plt.title('Skeleton {} Frame #{} of 300 \n)'.format(index, skeleton_index[0] ))
         skeleton_index[0] += 1
         return ax
+    
+    def animate_dots(skeleton):
+        #do sth
+        ax.clear()
+        ax.set_xlim([-1,1])
+        ax.set_ylim([-1,1])
+        ax.set_zlim([-1,1])
+        print(skeleton.shape)
+        for j in  range(25):
+            ax.scatter(skeleton[0][j], skeleton[1][j], skeleton[2][j],  color='red')
+            #ax.scatter(s[0], s[1], s[2], s[3], s[4], s[5],s[6], s[7], s[8],s[9], s[10], s[11],s[12], s[13], s[14],s[15], s[16], s[17],s[18], s[19], s[20],s[21], s[22], s[23], s[24],  color='red')
+        """
+        for i, j in bones:
+            joint_locs = skeleton[:,[i,j]]
+            # plot them
+            ax.scatter(joint_locs[0],joint_locs[1],joint_locs[2], color='blue')
+        """
+        plt.title('Skeleton {} Frame #{} of 300 \n)'.format(index, skeleton_index[0] ))
+        skeleton_index[0] += 1
+        
+        return ax
+    
     writergif = PillowWriter(fps=30) 
     for index in range(30):
         mpl.rcParams['legend.fontsize'] = 10
@@ -211,12 +233,12 @@ def visualize():
         skeleton_index = [0]
         
         skeleton_frames = skeletons
-
-        ani = FuncAnimation(fig, animate, skeleton_frames)
+        ani = FuncAnimation(fig, animate_dots, skeleton_frames)
+        #ani = FuncAnimation(fig, animate, skeleton_frames)
 
         #plt.title('Skeleton {} from {} test data'.format(index, args.dataset))
         #plt.show()
-        ani.save(f'./test'+ str(index)+'.gif', writer=writergif)
+        ani.save('./test_dots_'+ str(index)+'.gif', writer=writergif)
         print('test.mp4', " saved\n")
         
 visualize()
