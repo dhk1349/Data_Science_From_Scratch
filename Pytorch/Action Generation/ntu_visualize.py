@@ -164,7 +164,8 @@ def visualize():
     #label_path = args.labelpath or './data/{}/val_label.pkl.npy'.format(args.dataset)
 
     #data = np.load('./generated_action.npy', mmap_mode='r')
-    data = np.load('./generated_action.npy')
+    #data = np.load("./snapshot/gan_cnn_generated_action01.npy")
+    data=np.load("./generated_action.npy")
     data=data.reshape(1,30,3,25)
     #print(data.shape)
     bones = bone_pairs['ntu/xsub']
@@ -192,8 +193,10 @@ def visualize():
         ax.set_xlim([-1,1])
         ax.set_ylim([-1,1])
         ax.set_zlim([-1,1])
-        print(skeleton.shape)
+        #print(skeleton.shape)
         for j in  range(25):
+            #print(skeleton[0][j], skeleton[1][j], skeleton[2][j])
+            #ax.scatter(skeleton[1][j], skeleton[0][j], skeleton[2][j],  color='red')
             ax.scatter(skeleton[0][j], skeleton[1][j], skeleton[2][j],  color='red')
             #ax.scatter(s[0], s[1], s[2], s[3], s[4], s[5],s[6], s[7], s[8],s[9], s[10], s[11],s[12], s[13], s[14],s[15], s[16], s[17],s[18], s[19], s[20],s[21], s[22], s[23], s[24],  color='red')
         """
@@ -208,7 +211,7 @@ def visualize():
         return ax
     
     writergif = PillowWriter(fps=30) 
-    for index in range(30):
+    for index in range(1):
         mpl.rcParams['legend.fontsize'] = 10
         fig = plt.figure()
         ax = fig.gca(projection='3d')
@@ -217,7 +220,8 @@ def visualize():
         ax.set_zlim([-1,1])
 
         # get data
-        data = np.load('./generated_action.npy')[0]
+        #data = np.load("./snapshot/gan_cnn_generated_action01.npy")[0]
+        data=np.load("./generated_action.npy")
         print(data.shape)
         skeletons=data.reshape(30,3,25)
         #skeletons = data[index]
@@ -238,7 +242,7 @@ def visualize():
 
         #plt.title('Skeleton {} from {} test data'.format(index, args.dataset))
         #plt.show()
-        ani.save('./test_dots_'+ str(index)+'.gif', writer=writergif)
+        ani.save('./cnn_gan_'+ str(index)+'.gif', writer=writergif)
         print('test.mp4', " saved\n")
         
 visualize()
