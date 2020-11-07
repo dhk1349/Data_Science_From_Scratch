@@ -165,8 +165,9 @@ def visualize():
 
     #data = np.load('./generated_action.npy', mmap_mode='r')
     #data = np.load("./snapshot/gan_cnn_generated_action01.npy")
-    data=np.load("./generated_action.npy")
-    data=data.reshape(1,30,3,25)
+    #data = np.load("./snapshot/gan_cnn_generated_action99.npy")[0]
+
+    #data=data.reshape(1,30,3,25)
     #print(data.shape)
     bones = bone_pairs['ntu/xsub']
 
@@ -194,36 +195,36 @@ def visualize():
         ax.set_ylim([-1,1])
         ax.set_zlim([-1,1])
         #print(skeleton.shape)
-        for j in  range(25):
-            #print(skeleton[0][j], skeleton[1][j], skeleton[2][j])
-            #ax.scatter(skeleton[1][j], skeleton[0][j], skeleton[2][j],  color='red')
-            ax.scatter(skeleton[0][j], skeleton[1][j], skeleton[2][j],  color='red')
-            #ax.scatter(s[0], s[1], s[2], s[3], s[4], s[5],s[6], s[7], s[8],s[9], s[10], s[11],s[12], s[13], s[14],s[15], s[16], s[17],s[18], s[19], s[20],s[21], s[22], s[23], s[24],  color='red')
-        """
-        for i, j in bones:
-            joint_locs = skeleton[:,[i,j]]
-            # plot them
-            ax.scatter(joint_locs[0],joint_locs[1],joint_locs[2], color='blue')
-        """
+        
+        X=skeleton[0]
+        Y=skeleton[1]
+        Z=skeleton[2]
+        #print(X)
+        #print(Y)
+        #print(Z)
+        
+        ax.scatter(X,Y,Z)
+
         plt.title('Skeleton {} Frame #{} of 300 \n)'.format(index, skeleton_index[0] ))
         skeleton_index[0] += 1
         
         return ax
     
     writergif = PillowWriter(fps=30) 
-    for index in range(1):
+    for index in range(0, 25, 3):
         mpl.rcParams['legend.fontsize'] = 10
         fig = plt.figure()
         ax = fig.gca(projection='3d')
         ax.set_xlim([-1,1])
         ax.set_ylim([-1,1])
         ax.set_zlim([-1,1])
-
+        
         # get data
-        #data = np.load("./snapshot/gan_cnn_generated_action01.npy")[0]
-        data=np.load("./generated_action.npy")
+        #data= np.load("./realdata_numpy/r_"+str(index)+".npy")[0]
+        data = np.load("./snapshot/cnngan300/1106_cnn_"+str(index)+".npy")[0]
+        #data=np.load("./generated_action.npy")
         print(data.shape)
-        skeletons=data.reshape(30,3,25)
+        skeletons=data.reshape(300,3,25)
         #skeletons = data[index]
         print(skeletons.shape)
         
@@ -242,7 +243,8 @@ def visualize():
 
         #plt.title('Skeleton {} from {} test data'.format(index, args.dataset))
         #plt.show()
-        ani.save('./cnn_gan_'+ str(index)+'.gif', writer=writergif)
-        print('test.mp4', " saved\n")
+        #ani.save('./realdata_numpy/b_'+ str(index)+'.gif', writer=writergif)
+        ani.save('./snapshot/cnngan300/1106_cnn_dots_'+str(index)+'.gif', writer=writergif)
+        print(str(index)+'test.mp4', " saved\n")
         
 visualize()
