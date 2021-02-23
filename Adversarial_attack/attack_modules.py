@@ -129,6 +129,11 @@ def deepfool(image, net, device='cpu', num_classes=10, overshoot=0.02, max_iter=
     return label, perturbed_image[0]
 
 
+def pgd(image, net, device='cpu', num_classes=10, overshoot=0.02, max_iter=10):
+
+    return
+
+
 def attack_test(model, device, test_loader, epsilon=None):
     """
     :explanation:
