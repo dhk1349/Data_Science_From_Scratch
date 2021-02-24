@@ -66,11 +66,13 @@ def deepfool(image, net, device='cpu', num_classes=10, overshoot=0.02, max_iter=
     init_pred = 0
     # init_pred = output.max(1, keepdim=True)[1]
     f_image = net(image).data.cpu().numpy().flatten()
+    # numpy argsort: 작은 순으로 element index를 반환
+    # [::-1]는 앞뒤를 뒤집은 인덱싱 문법
     I = (np.array(f_image)).flatten().argsort()[::-1]
 
+    # 사실 I[0:num_classes]는 없어도 되지만 혹시 몰라서 잘라주는 듯
     I = I[0:num_classes]
     label = I[0]  # switch to init_pred
-
     # input_shape = image.detach().numpy().shape
     input_shape = image.size()
     perturbed_image = copy.deepcopy(image)
@@ -82,9 +84,10 @@ def deepfool(image, net, device='cpu', num_classes=10, overshoot=0.02, max_iter=
     x = torch.tensor(perturbed_image[None, :], requires_grad=True).to(device=device)
 
     fs = net(x[0])
-
+    print(f"fs: {fs}")
     fs_list = [fs[0, I[k]] for k in range(num_classes)]
     k_i = label
+    print(f"fs_list: {fs_list}")
 
     while k_i == label and loop_i < max_iter:
 
@@ -190,15 +193,17 @@ def attack_test(model, device, test_loader, epsilon=None):
         if final_pred.item() == target.item():
             correct += 1
             # Special case for saving 0 epsilon examples
-            if (epsilon == 0) and (len(adv_examples) < 5):
-                adv_ex = perturbed_data.squeeze().detach().cpu().numpy()
-                adv_examples.append((init_pred.item(), final_pred.item(), adv_ex))
+            #if (epsilon == 0) and (len(adv_examples) < 5):
+            #    adv_ex = perturbed_data.squeeze().detach().cpu().numpy()
+            #    adv_examples.append((init_pred.item(), final_pred.item(), adv_ex, data.squeeze().detach().cpu().numpy()))
         else:
             # Save some adv examples for visualization later
-            if len(adv_examples) < 5:
+            if len(adv_examples) < 100:
                 adv_ex = perturbed_data.squeeze().detach().cpu().numpy()
-                adv_examples.append((init_pred.item(), final_pred.item(), adv_ex))
-
+                adv_examples.append((init_pred.item(), final_pred.item(), adv_ex, data.squeeze().detach().cpu().numpy()))
+        if(len(adv_examples)==100):
+            print(f"100 adv samples collected..\nexiting..")
+            return 0, np.array(adv_examples)
     # Calculate final accuracy for this epsilon
     final_acc = correct / float(len(test_loader))
 
